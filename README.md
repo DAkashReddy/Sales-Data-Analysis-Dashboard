@@ -11,7 +11,7 @@ This project focuses on the analysis and visualization of a comprehensive sales 
 
 ## Tools Used
 - **SQL Server**: For executing complex queries, including data aggregation, window functions, and CTEs.
-- **Power BI**: For developing an interactive dashboard that displays insights derived from the sales data.
+- **Tableau**: For developing an interactive dashboard that displays insights derived from the sales data.
 
 ## Data Analysis
 SQL queries were written to explore the dataset thoroughly. These queries facilitated:
