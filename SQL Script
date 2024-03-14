@@ -1,0 +1,85 @@
+-- Initial Data Inspection
+SELECT * FROM [dbo].[sales_data];
+
+-- Identification of Unique Values for Categorical Analysis
+SELECT DISTINCT status FROM [dbo].[sales_data];
+SELECT DISTINCT year_id FROM [dbo].[sales_data];
+SELECT DISTINCT PRODUCTLINE FROM [dbo].[sales_data];
+SELECT DISTINCT COUNTRY FROM [dbo].[sales_data];
+SELECT DISTINCT DEALSIZE FROM [dbo].[sales_data];
+SELECT DISTINCT TERRITORY FROM [dbo].[sales_data];
+
+-- Year-specific Analysis
+SELECT DISTINCT MONTH_ID FROM [dbo].[sales_data]
+WHERE year_id = 2005;
+
+-- Revenue Analysis by Product Line
+SELECT PRODUCTLINE, SUM(sales) AS Revenue
+FROM [dbo].[sales_data]
+GROUP BY PRODUCTLINE
+ORDER BY Revenue DESC;
+
+-- Annual Revenue Calculation
+SELECT YEAR_ID, SUM(sales) AS Revenue
+FROM [dbo].[sales_data]
+GROUP BY YEAR_ID
+ORDER BY Revenue DESC;
+
+-- Deal Size Revenue Impact
+SELECT DEALSIZE, SUM(sales) AS Revenue
+FROM [dbo].[sales_data]
+GROUP BY DEALSIZE
+ORDER BY Revenue DESC;
+
+-- Monthly Sales Performance in a Specific Year
+SELECT MONTH_ID, SUM(sales) AS Revenue, COUNT(ORDERNUMBER) AS Frequency
+FROM [dbo].[sales_data]
+WHERE YEAR_ID = 2005
+GROUP BY MONTH_ID
+ORDER BY Revenue DESC;
+
+-- Product Sales in Peak Month
+SELECT MONTH_ID, PRODUCTLINE, SUM(sales) AS Revenue, COUNT(ORDERNUMBER) AS Frequency
+FROM [dbo].[sales_data]
+WHERE YEAR_ID = 2003 AND MONTH_ID = 11
+GROUP BY MONTH_ID, PRODUCTLINE
+ORDER BY Revenue DESC;
+
+-- Advanced Customer Segmentation with RFM Analysis
+WITH rfm AS (
+    SELECT CUSTOMERNAME, SUM(sales) AS MonetaryValue, AVG(sales) AS AvgMonetaryValue,
+           COUNT(ORDERNUMBER) AS Frequency, MAX(ORDERDATE) AS last_order_date,
+           DATEDIFF(dd, MAX(ORDERDATE), (SELECT MAX(ORDERDATE) FROM [dbo].[sales_data])) AS Recency
+    FROM [dbo].[sales_data]
+    GROUP BY CUSTOMERNAME
+),
+rfm_calc AS (
+    SELECT r.*, NTILE(4) OVER (ORDER BY Recency DESC) AS rfm_recency,
+           NTILE(4) OVER (ORDER BY Frequency) AS rfm_frequency,
+           NTILE(4) OVER (ORDER BY MonetaryValue) AS rfm_monetary
+    FROM rfm r
+)
+SELECT CUSTOMERNAME, rfm_recency, rfm_frequency, rfm_monetary
+FROM rfm_calc;
+
+-- Product Affinity Analysis: Identifying Frequently Sold Together Items
+SELECT DISTINCT OrderNumber, STUFF(
+    (SELECT ',' + PRODUCTCODE
+     FROM [dbo].[sales_data] p
+     WHERE p.ORDERNUMBER = s.ORDERNUMBER
+     FOR XML PATH ('')), 1, 1, '') AS ProductCodes
+FROM [dbo].[sales_data] s;
+
+-- Locational Sales Performance
+SELECT city, SUM(sales) AS Revenue
+FROM [dbo].[sales_data]
+WHERE country = 'UK'
+GROUP BY city
+ORDER BY Revenue DESC;
+
+-- Top Products in the United States Market
+SELECT country, YEAR_ID, PRODUCTLINE, SUM(sales) AS Revenue
+FROM [dbo].[sales_data]
+WHERE country = 'USA'
+GROUP BY country, YEAR_ID, PRODUCTLINE
+ORDER BY Revenue DESC;
