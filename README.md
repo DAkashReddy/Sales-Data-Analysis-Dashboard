@@ -1,7 +1,7 @@
 # Automobile Sales Data Exploration and Visualization Project
 
 ## Overview
-This project focuses on the analysis and visualization of a comprehensive sales dataset. The primary goal is to extract actionable insights on sales performance, product popularity, customer behavior, and seasonal sales trends using advanced SQL queries and creating dynamic visualizations with Power BI.
+This project focuses on the analysis and visualization of a comprehensive sales dataset. The primary goal is to extract actionable insights on sales performance, product popularity, customer behavior, and seasonal sales trends using advanced SQL queries and creating dynamic visualizations with Tableau.
 
 ## Objectives
 - To dissect and understand sales data at a granular level.
@@ -21,7 +21,7 @@ SQL queries were written to explore the dataset thoroughly. These queries facili
 - Performing customer segmentation using RFM (Recency, Frequency, Monetary) analysis.
 
 ## Dashboard Visualization
-An intuitive dashboard was created in Power BI to visually represent the findings from the SQL analysis. It includes:
+An intuitive dashboard was created in Tableau to visually represent the findings from the SQL analysis. It includes:
 - Revenue by product line and country.
 - Deal size distribution.
 - Monthly sales trends.
@@ -35,8 +35,8 @@ From the analysis and dashboard, several insights were discovered:
 
 ## How to Navigate the Repository
 - The `sql_queries.sql` file contains all the SQL queries used to explore and analyze the dataset.
-- The `dashboard_screenshots` folder contains images of the Power BI dashboards.
+- The `dashboard_screenshots` folder contains images of the Tableau dashboards.
 - The `data` folder houses the sales dataset used for this project.
 
 ## Conclusion
-This project successfully leveraged SQL and Power BI tools to convert raw sales data into a clear narrative, aiding in strategic decision-making for business growth.
+This project successfully leveraged SQL and Tableau tools to convert raw sales data into a clear narrative, aiding in strategic decision-making for business growth.
